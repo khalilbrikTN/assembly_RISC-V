@@ -1,0 +1,3 @@
+LUI x2,200
+ADDI x2,x2,50
+ECALL
