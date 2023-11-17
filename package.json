@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/khalilbrikTN/assembly_RISC-V/issues"
   },
-  "homepage": "https://github.com/khalilbrikTN/assembly_RISC-V#readme"
+  "homepage": "https://github.com/khalilbrikTN/assembly_RISC-V#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "fast-csv": "^4.3.6",
+    "toml": "^3.0.0"
+  }
 }

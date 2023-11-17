@@ -40,6 +40,7 @@ int i=0;
 
 string dec_to_binary(int decimal){
     string binaryStr = "";
+    if (decimal == 0) return "0";
     while (decimal > 0) {
         binaryStr = to_string(decimal % 2) + binaryStr;
         decimal = decimal / 2;
@@ -115,21 +116,25 @@ void print_registers(){
 }
 
 void print_memory(){
-    cout << "Memory in Decimal:\n";
-    cout << "Address\t\t" << "value\n";
-    for(auto i:data_values){
-        cout << i.first << "\t\t" << i.second << "\n";
+    ofstream file("memory.csv", ios::app);
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file." << std::endl;
     }
-    cout << "Memory in Binary:\n";
-    cout << "Address\t\t" << "value\n";
-    for(auto i:data_values){
-        cout << dec_to_binary(stoi(i.first)) << "\t\t" << dec_to_binary(stoi(i.second)) << "\n";
+
+    //for(auto i:data_values){
+    //    file << i.first << "," << i.second << ","
+    //    << dec_to_binary(stoi(i.first)) << "," << dec_to_binary(stoi(i.second)) << ","
+    //    << dec_to_hex(stoi(i.first)) << "," << dec_to_hex(stoi(i.second)) <<"\n";
+    //}
+    file << "[";
+    for (auto &i : data_values) {
+        file << "[\"" << i.first << "\",\"" << i.second << "\",\""
+        << dec_to_binary(stoi(i.first)) << "\",\"" << dec_to_binary(stoi(i.second)) << "\",\""
+        << dec_to_hex(stoi(i.first)) << "\",\"" << dec_to_hex(stoi(i.second)) <<"\"],";
     }
-    cout << "Memory in HEX:\n";
-    cout << "Address\t\t" << "value\n";
-    for(auto i:data_values){
-        cout << dec_to_hex(stoi(i.first)) << "\t\t" << dec_to_hex(stoi(i.second)) <<"\n";
-    }
+    file << "],\n";
+    file.close();
 }
 
 void MUL(bitset<32>* rd, const bitset<32>* rs1, const bitset<32>* rs2){
@@ -710,6 +715,7 @@ void uploadProgram(){
 void executeInstruction(vector<string> inputs){
     string instruction = inputs[0];
     print_registers();
+    print_memory();
     if(instruction=="mul" || instruction == "MUL"){
         inputs[1].pop_back();
         bitset<32>* rd = getRegister(inputs[1]);
@@ -1142,7 +1148,7 @@ void executeProgram(){
     }
 }
 
-void clearFileContents(const std::string& filename) {
+void clearFileContents(const string& filename) {
     // Open the file in write mode, which truncates the file
     std::ofstream file(filename, std::ios::out | std::ios::trunc);
 
@@ -1158,9 +1164,17 @@ void clearFileContents(const std::string& filename) {
 
 int main(){
     clearFileContents("registers.csv");
+    clearFileContents("memory.csv");
+    ofstream memory_file("memory.csv", ios::app);
+    if (!memory_file.is_open()) {
+        cerr << "Memory not opened" << endl;
+        return 1;
+    }
+    memory_file << "memory = [" << endl;
     ReadData();
     uploadProgram();
     executeProgram();
-    cout << (int)(a0).to_ulong() << endl;
+    memory_file << "]" << endl;
+    memory_file.close();
     return 0;
 }
