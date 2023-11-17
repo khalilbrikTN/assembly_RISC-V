@@ -1,0 +1,19 @@
+{
+  "name": "assembly_risc-v",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khalilbrikTN/assembly_RISC-V.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khalilbrikTN/assembly_RISC-V/issues"
+  },
+  "homepage": "https://github.com/khalilbrikTN/assembly_RISC-V#readme"
+}
