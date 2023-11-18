@@ -9,9 +9,14 @@ document.getElementById('programForm').addEventListener('submit', function(e) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ program, startAddress })
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            document.getElementById('simulationOutput').textContent = data;
+            document.getElementById('registers').innerHTML = data.registers;
+            document.getElementById('memory').innerHTML = JSON.stringify(data.memory);
+
+
+
         })
         .catch(error => console.error('Error:', error));
 });
+

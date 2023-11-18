@@ -34,6 +34,7 @@ function parseTOML(filePath) {
 const registers = parseCSVToMatrix("../registers.csv");
 console.log(registers);
 
+
 const memory = parseTOML("../memory.csv");
 console.log(memory);
 
@@ -60,9 +61,17 @@ app.post('/run', (req, res) => {
     // Compile and run the program
     execPromise('g++ ../main.cpp -o ../main')
         .then(() => execPromise('cd ../ && ./main'))
-        .then(output => res.send(output))
-        .catch(({stdout, stderr}) => res.status(500).send(`${stdout}\nError: ${stderr}`));
+        .catch(({stdout, stderr}) => res.status(500).send(`${stdout}\nError1: ${stderr}`))
+        .then((output) => {
+            res.json({
+                output: output,
+                registers: registers,
+                memory: memory
+            });
+        })
+        .catch(({stdout, stderr}) => res.status(500).send(`${stdout}\nError2: ${stderr}`));
 });
+
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
